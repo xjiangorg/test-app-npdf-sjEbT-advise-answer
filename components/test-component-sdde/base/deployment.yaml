@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app.kubernetes.io/created-by: application-service
+    app.kubernetes.io/instance: test-component-sdde
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/name: test-component-sdde
+    app.kubernetes.io/part-of: test-app-npdf
+  name: test-component-sdde
+  namespace: build-e2e-hacbs-cgpz
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: test-component-sdde
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/instance: test-component-sdde
+    spec:
+      containers:
+      - image: quay.io/redhat-appstudio-qe/test-images:83934b2c4b724c1e89cb76d8d7cbcc9e
+        imagePullPolicy: Always
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8081
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        name: container-image
+        ports:
+        - containerPort: 8081
+        readinessProbe:
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          tcpSocket:
+            port: 8081
+        resources: {}
+status: {}
